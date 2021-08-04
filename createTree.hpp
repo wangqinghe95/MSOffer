@@ -41,6 +41,7 @@ TreeNode* preOrder(TreeNode* node, const vector<int> &arr ,const int index) {
 TreeNode* createTree(const vector<int>& treeArr) {
     TreeNode* root = nullptr;
     preOrder(root, treeArr, 0);
+    return root;
 }
 
 void inOrder(TreeNode* root) {
