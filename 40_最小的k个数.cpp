@@ -8,7 +8,7 @@ using namespace std;
     2、然后再交换数组首尾元素 n-k 次
     3、那么数组的倒数第 n-k-1,n-k 就是数组中全部第 k 小个数
 */
-class Solution_Offer1 {
+class Solution_heap2 {
 public:
     void updown(vector<int> &arr,int n, int i) {
         
@@ -68,7 +68,7 @@ public:
 */
 
 // 这种方法本地运行没问题，leetcode提交报了栈溢出
-class Solution_Offer40 {
+class Solution_heap1 {
 public:
     vector<int> getLeastNumbers(vector<int>& arr, int k) {
         vector<int> max_heap(k,0);
@@ -121,17 +121,67 @@ private:
     }
 };
 
-class Solution_Offer40_1
-{
+/*
+ * 快排之后取前n个数 
+ */
+
+ /*
+* 快排：根据快排性质可知，在对于每一个 pivotpos 
+* 每次排序后所有小于该数的值都位于该数之前（非递减），反之位于其后
+* 所以如果快排的 pivotpos 的下标是 k 的话，刚好满足该情况
+*/
+
+class Solution_quick1 {
 public:
     vector<int> getLeastNumbers(vector<int>& arr, int k) {
-        quick(arr, k);
-    }
-private:
-    void quick(vector<int> &arr, int l, int k) {
-        
+        quick(arr, 0, arr.size()-1);
+        vector<int> res;
+        for (int i = 0; i < k; ++i) {
+            res.push_back(arr[i]);
+        }
+        return res;
     }
 
+private:
+    void quick(vector<int>& arr, int low, int high) {
+#if 1
+        //快排
+        if (low < high) {
+            int pivotpos = partition(arr, low, high);
+            quick(arr, low, pivotpos-1);
+            quick(arr, pivotpos+1, high);
+        }
+#else
+        // 中间判断，减少排序次数
+        // 根据快排性质简化流程
+        if (low < high) {
+            int pivotpos = partition(arr, low, high);
+            if (pivotpos == k){
+                return;
+            }
+            else {
+                quick(arr, low, pivotpos-1, k);
+                quick(arr, pivotpos+1, high, k);
+            }
+        }      
+#endif 
+    }
+
+    int partition(vector<int>& arr, int low, int high) {
+        int tmp = arr[low];
+        while(low < high) {
+            while(low < high && arr[high] >= tmp) {
+                high--;
+            }
+            arr[low] = arr[high];
+            while(low < high && arr[low] <= tmp) {
+                low++;
+            }
+            arr[high] = arr[low];
+        }
+        arr[low] = tmp;
+        return low;
+    }
 };
 
 int main() {
