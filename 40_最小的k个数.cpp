@@ -144,8 +144,8 @@ public:
 
 private:
     void quick(vector<int>& arr, int low, int high) {
-#if 1
-        //快排
+#if 0
+        //快排,基础解法，将整个数组排序
         if (low < high) {
             int pivotpos = partition(arr, low, high);
             quick(arr, low, pivotpos-1);
