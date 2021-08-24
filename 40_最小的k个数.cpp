@@ -68,6 +68,7 @@ public:
 */
 
 // 这种方法本地运行没问题，leetcode提交报了栈溢出
+// 20210824 修正，因为在 child<=n 写错
 class Solution_heap1 {
 public:
     vector<int> getLeastNumbers(vector<int>& arr, int k) {
@@ -87,8 +88,9 @@ public:
 
         for (int i = k; i < arr.size(); ++i) {
             if (arr[i] < max_heap[0]) {
-                max_heap[0] = max_heap[k - 1];
-                max_heap[k-1] = arr[i];
+                // max_heap[0] = max_heap[k - 1];
+                // max_heap[k-1] = arr[i];
+                max_heap[0] = arr[i];
                 adjustMaxHeap(max_heap, k);
             }
         }
@@ -106,7 +108,7 @@ private:
         int child;
         for(; parent * 2 + 2 <= n; parent = child) {
             child = parent * 2 + 1;
-            if (child + 1 <= n && arr[child] < arr[child+1]) {
+            if (child + 1 < n && arr[child] < arr[child+1]) {
                 child++;
             }
 
@@ -134,7 +136,7 @@ private:
 class Solution_quick1 {
 public:
     vector<int> getLeastNumbers(vector<int>& arr, int k) {
-        quick(arr, 0, arr.size()-1);
+        quick(arr, 0, arr.size()-1, k);
         vector<int> res;
         for (int i = 0; i < k; ++i) {
             res.push_back(arr[i]);
@@ -143,7 +145,7 @@ public:
     }
 
 private:
-    void quick(vector<int>& arr, int low, int high) {
+    void quick(vector<int>& arr, int low, int high,int k) {
 #if 0
         //快排,基础解法，将整个数组排序
         if (low < high) {
@@ -185,12 +187,15 @@ private:
 };
 
 int main() {
-    vector<int> arr{3,2,1};
-    int k = 2;
+    vector<int> arr{0,1,1,2,4,4,1,3,3,2};
+
+    int k = 6;
     /*
     Solution_Offer1 a;
     a.getLeastNumbers(arr, k); */
-    Solution_Offer40 a;
-    a.getLeastNumbers(arr, k);
+    // Solution_quick1 a;
+    // a.getLeastNumbers(arr, k);
+    Solution_heap1 heap;
+    heap.getLeastNumbers(arr, k);
     return 0;
 }
