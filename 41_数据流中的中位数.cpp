@@ -1,14 +1,15 @@
 
 #include<iostream>
 #include<vector>
+#include<queue>
 using namespace std;
 
 // 大小堆
-//测试用例没有问题，但是超时了，可能是排序的时间复杂度超了
-class MedianFinder {
+//测试用例没有问题，但是leetcode提交超时了，可能是排序的时间复杂度超了
+class MedianFinder_2 {
 public:
     /** initialize your data structure here. */
-    MedianFinder() {
+    MedianFinder_2() {
         if (!min_heap.empty()){
             min_heap.clear();
         }
@@ -154,7 +155,112 @@ private:
     int mid;
 };
 
+class MedianFinder_4 {
+private:
+    priority_queue<int, vector<int>, less<int>> bigHeap;
+    priority_queue<int, vector<int>, greater<int>> smallHeap;
+public:
+    /** initialize your data structure here. */
+    MedianFinder_4() {
 
+    }
+    
+    void addNum(int num) {
+        if (bigHeap.size() == smallHeap.size()) {
+            smallHeap.push(num);
+            int value = smallHeap.top();
+            smallHeap.pop();
+            bigHeap.push(value);
+        }
+        else {
+            bigHeap.push(num);
+            int value = bigHeap.top();
+            bigHeap.pop();
+            smallHeap.push(value);
+        }
+    }
+    
+    double findMedian() {
+        if (bigHeap.size() == smallHeap.size()) {
+            return (double)(bigHeap.top() + smallHeap.top()) / 2.0;
+        }
+        else {
+            return (double)bigHeap.top();
+        }
+    }
+};
+
+// 数据又超时了，看来不能使用堆排序，明天试一试归并排序，如果还不行就只能用algorithm自带的排序方法了
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+    MedianFinder() {
+        if (arr.size() != 0) {
+            arr.clear();
+        }
+        left = -1;
+        right = -1;
+    }
+    
+    void addNum(int num) {
+        if (arr.size() == 0) {
+            left = 0;
+            right = 0;
+        }
+        else {
+            if (left == right) {
+                right++;
+            }
+            else {
+                left++;
+            }
+        }
+        arr.push_back(num);
+    }
+    
+    double findMedian() {
+        heapSort(arr);
+        return (arr[left] + arr[right]) / 2.0;
+    }
+
+private:
+    vector<int> arr;
+    int left;
+    int right;
+
+    void heapSort(vector<int>& arr) {
+        int n = arr.size();
+        if (n < 2) {
+            return;
+        }
+        for (int i = (n-2)/2; i >= 0; --i) {
+            percdown(arr, n, i);
+        }
+
+        for (int i = n - 1; i >= 0; --i) {
+            swap(arr[0], arr[i]);
+            percdown(arr, i, 0);
+        }
+    }
+    void percdown(vector<int>& arr, int n, int i) {
+        int parent = i;
+        int x = arr[parent];
+        int child;
+        for (; parent*2+2 <= n; parent = child) {
+            child = parent*2+1;
+            if (child+1 < n && arr[child+1] > arr[child]) {
+                child++;
+            }
+            if (arr[child] > x) {
+                arr[parent] = arr[child];
+            }
+            else {
+                break;
+            }
+        }
+        arr[parent] = x;
+    }
+};
 int main(){
     MedianFinder* obj = new MedianFinder();
     obj->addNum(1);
@@ -162,4 +268,19 @@ int main(){
     cout << "findMedian:" << obj->findMedian() << endl;
     obj->addNum(3);
     cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(4);
+    cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(5);
+    cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(6);
+    cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(7);
+    cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(8);
+    cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(9);
+    cout << "findMedian:" << obj->findMedian() << endl;
+    obj->addNum(10);
+    cout << "findMedian:" << obj->findMedian() << endl;
+
 }
