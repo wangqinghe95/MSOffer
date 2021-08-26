@@ -2,6 +2,7 @@
 #include<iostream>
 #include<vector>
 #include<queue>
+#include<algorithm>
 using namespace std;
 
 // 大小堆
@@ -155,6 +156,7 @@ private:
     int mid;
 };
 
+
 class MedianFinder_4 {
 private:
     priority_queue<int, vector<int>, less<int>> bigHeap;
@@ -191,6 +193,7 @@ public:
 };
 
 // 数据又超时了，看来不能使用堆排序，明天试一试归并排序，如果还不行就只能用algorithm自带的排序方法了
+// 暴力破解不行，C++的排序都过不了最后一个测试点
 class MedianFinder {
 public:
     /** initialize your data structure here. */
@@ -219,7 +222,9 @@ public:
     }
     
     double findMedian() {
-        heapSort(arr);
+        // heapSort(arr);
+        // merge_sort(arr, arr.size());
+        sort(arr.begin(), arr.end());
         return (arr[left] + arr[right]) / 2.0;
     }
 
@@ -227,6 +232,48 @@ private:
     vector<int> arr;
     int left;
     int right;
+
+    // 归并排序也超时，看来不是代码的问题，是排序算法的问题
+    void merge_sort(vector<int>&arr, int n){
+        vector<int> tmp(arr.size(), 0);
+        msort(arr, tmp, 0, n-1);
+    }
+    void msort(vector<int>&arr, vector<int>& tmp, int start, int end) {
+        if (start < end) {
+            int middle = (start + end) / 2;
+            msort(arr, tmp, start, middle);
+            msort(arr, tmp, middle+1, end);
+            merge(arr, tmp, start, middle, end);
+        }
+    }
+    void merge(vector<int>& arr, vector<int>& tmp, int start, int middle, int end) {
+        int left_ = start;
+        int right_ = middle+1;
+        int s = start;
+
+        while (left_ <= middle && right_ <= end)
+        {
+            // int value = arr[left] <= arr[right] ? arr[left] : arr[right];
+            if (arr[left_] <= arr[right_]) {
+                tmp[s++] = arr[left_++];
+            }
+            else {
+                tmp[s++] = arr[right_++];
+            }
+        }
+
+        while (left_ <= middle)
+        {
+            tmp[s++] = arr[left_++];
+        }
+        while (right_ <= end)
+        {
+            tmp[s++] = arr[right_++];
+        }
+        for (; start <= end; start++) {
+            arr[start] = tmp[start];
+        }    
+    }
 
     void heapSort(vector<int>& arr) {
         int n = arr.size();
