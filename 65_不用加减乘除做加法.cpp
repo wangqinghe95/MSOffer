@@ -7,7 +7,7 @@ public:
     int add(int a, int b) {
         while (b != 0)
         {
-            int c = (a & b) << 1;
+            int c = (unsigned int)(a & b) << 1; //C++的int左转移容易出现溢出问题
             a ^= b; //a is euqal with b is 0
             b = c;
         }
