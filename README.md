@@ -1,6 +1,8 @@
 # MSOffer
 [剑指 offer 习题](https://leetcode-cn.com/problemset/lcof/)
 
+# MSOffer-1
+
 start by 2021.05.19
 + 03：找出数组中重复的数字，任意一个即可
 + 04：在一个从左向右，从上向下递增的数组中查找指定数字
@@ -77,3 +79,9 @@ start by 2021.05.19
 + 67：字符串转数字
 + 68-I：二叉搜索树的最近公共祖先
 + 68-II：二叉树的最近公共祖先
+
+ending in 20210925
+
+---
+# MSOffer-2
++ 1：
