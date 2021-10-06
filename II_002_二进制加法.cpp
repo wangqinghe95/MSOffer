@@ -1,73 +1,79 @@
 #include<iostream>
 #include<algorithm>
-#include<string>
 using namespace std;
 
+// method of subduction to simulate division
 class Solution {
 public:
     string addBinary(string a, string b) {
-        int lenA = a.length();
-        int lenB = b.length();
+        int len1 = a.size() - 1;
+        int len2 = b.size() - 1;
 
+        string res;
         int carry = 0;
-        string res = "";
-        while (lenA > 0 || lenB > 0) {
-            int numA = lenA > 0 ? a[lenA] - '0' : 0;
-            int numB = lenB > 0 ? b[lenB] - '0' : 0;
-
-            lenB--;
-            lenA--;
-
-            int tmp = numB + numA + carry;
-            carry = tmp / 2;
-            res.push_back((tmp%2)+'0');
+        while (len1 >= 0 || len2 >= 0) {
+            int num1 = len1 >= 0 ? a[len1] - '0' : 0;
+            int num2 = len2 >= 0 ? b[len2] - '0' : 0;
+            int sum = num2 + num1 + carry;
+            carry = sum / 2;
+            res.push_back((sum % 2 + '0')); 
+            len1--;
+            len2--;
         }
 
         if (carry != 0) {
-            res.push_back(carry + '0');
+            res.push_back(carry  + '0');
         }
 
-        // return reverseString(res);
         reverse(res.begin(), res.end());
         return res;
     }
-// private:
-//     string reverseString(string& s) {
-//         for (int i = 0; i < s.length()/2; ++i) {
-//             s[i] = s[s.length() - i - 1];
-//         }
-//         return s;
-//     }
+};
+
+class Solution_1 {
+public:
+    string addBinary(string a, string b) {
+        int lenA = a.length()-1;
+        int lenB = b.length()-1;
+        string res = "";
+        int carry = 0;
+        while (lenA >= 0 && lenB >= 0)
+        {
+            int tmp = carry + (a[lenA]-'0') + (b[lenB]-'0');
+            int cur = tmp % 2;
+            carry = tmp / 2; 
+            res.push_back(cur+'0');
+
+            lenA--;
+            lenB--;
+        }
+
+        while (lenA >= 0)
+        {
+            if (carry != 0)
+            {
+                res.push_back(a[lenA]+carry);
+                carry /= 2;
+            }
+            else {
+                res.push_back(a[lenA]);
+            }
+        }
+        while (lenB >= 0)
+        {
+           if (carry != 0) {
+               res.push_back(b[lenB]+carry);
+               carry /= 2;
+           }
+           else {
+               res.push_back(b[lenB]);
+           }
+        }
+        
+        return  reverse(res.begin(), res.end());
+    }
 };
 
 int main() {
-    Solution solution;
-    string a("11");
-    string b("10");
-    cout << solution.addBinary(a, b) << endl;
-}
 
-/*
-
-*/
-
-string addStrings(string num1, string num2) {
-    string res = "";
-
-    int i1 = num1.length() - 1, i2 = num2.length() - 1;
-    int carry = 0;
-    while (i1 >= 0 || i2 >= 0) {
-        int x = i1 >= 0 ? num1[i1] - '0' : 0;
-        int y = i2 >= 0 ? num2[i2] - '0' : 0;
-
-        int sum = x + y + carry;
-        res.push_back('0' + sum % 2);
-        carry = sum / 2;
-
-        i1--;
-        i2--;
-    }
-    if (carry != 0) res.push_back('0' + carry);
-    reverse(res.begin(), res.end());
-    return res;
 }
