@@ -1,8 +1,57 @@
 #include"createTree.hpp"
+#include<stack>
+using namespace std;
+
+
+/**
+ * 辅助栈实现从尾到头的逆序
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        stack<ListNode*> que_1;
+        stack<ListNode*> que_2;
+
+        addStack(que_1, l1);
+        addStack(que_2, l2);
+
+        ListNode* head = new ListNode(-1, nullptr);
+        int carry = 0;
+        while (!que_1.empty() || !que_2.empty() || carry != 0) 
+        {
+            carry = getTopStk(que_1) + getTopStk(que_2) + carry;
+
+            ListNode* tmp = new ListNode(carry%10, head->next);
+            head->next = tmp;
+
+            carry /= 10;
+        }
+
+        return head->next;
+        
+    }
+private:
+    int getTopStk(stack<ListNode*> &q) {
+        if (q.empty()) {
+            return 0;
+        }
+
+        int val = q.top()->val;
+        q.pop();
+        return val;        
+    }
+
+    void addStack(stack<ListNode*> &q, ListNode* head) {
+        while (head) {
+            q.push(head);
+            head = head->next;
+        }
+    }
+};
 
 // res -> node
 //     tmp 
-class Solution {
+class Solution_2 {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         l1 = reverseList(l1);
