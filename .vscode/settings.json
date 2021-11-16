@@ -12,6 +12,7 @@
         "type_traits": "cpp",
         "utility": "cpp",
         "deque": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "new": "cpp"
     }
 }
