@@ -13,6 +13,7 @@
         "utility": "cpp",
         "deque": "cpp",
         "iostream": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "stack": "cpp"
     }
 }

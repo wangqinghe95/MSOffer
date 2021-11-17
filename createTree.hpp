@@ -21,6 +21,14 @@ struct TreeNode {
     // TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+
 TreeNode* newNode(int val) {
     if (val == -1) {
         return nullptr;
