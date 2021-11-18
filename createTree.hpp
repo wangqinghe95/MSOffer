@@ -24,9 +24,18 @@ struct TreeNode {
 class Node {
 public:
     int val;
-    Node* prev;
     Node* next;
-    Node* child;
+
+    Node(){}
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+    }
+
+    Node(int _val, Node* _next) {
+        val = _val;
+        next = _next;
+    }
 };
 
 TreeNode* newNode(int val) {

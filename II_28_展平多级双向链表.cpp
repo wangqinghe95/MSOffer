@@ -3,6 +3,14 @@
 #include<stack>
 using namespace std;
 
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+
 /**
  * @brief 前序遍历，将所有节点都放到一个数组中，然后数组一个一个数组组合成一个链表
  * 
