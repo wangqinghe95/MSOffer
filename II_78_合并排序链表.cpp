@@ -1,5 +1,6 @@
 #include<vector>
 #include<iostream>
+#include<queue>
 using namespace std;
 
 struct ListNode {
@@ -12,7 +13,41 @@ struct ListNode {
 
 
 // heap sort
+class Solution_heap {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        auto cmp = [](ListNode* a, ListNode* b){
+            return a->val > b->val;
+        };
+        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> heap(cmp);
 
+        ListNode* dummy = new ListNode();
+        ListNode* cur = dummy;
+
+        for(auto& node:lists) {
+            if (node != nullptr){
+                heap.push(node);
+            }
+        }
+
+        while(!heap.empty()){
+            ListNode* now = heap.top();
+            heap.pop();
+            if(now->next != nullptr) {
+                heap.push(now->next);
+            }
+            cur->next = now;
+            cur = cur->next;
+        }
+
+        ListNode* ret = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+
+        return ret;
+    }
+
+};
 // merge sort
 class Solution {
 public:
